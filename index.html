@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f3f6fa">
+<meta name="description" content="เครื่องคำนวณภาษีเงินได้บุคคลธรรมดาแบบขั้นบันได">
+<title>TaxFlow | เครื่องคำนวณภาษี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>\n*{box-sizing:border-box}:root{--bg:#f2f5f9;--paper:#fff;--ink:#24334a;--muted:#78869a;--line:#e7ecf2;--blue:#2864c5;--blue-soft:#edf4ff;--green:#21845c;--green-soft:#eaf6ef;--red:#cf5c67;--red-soft:#fff0f1;--shadow:0 10px 34px rgba(40,61,90,.055)}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Prompt',sans-serif;line-height:1.6}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(calc((100% - 1080px)/2),5%)}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:18px}.brand-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--blue);color:#fff}.brand small{display:block;font-size:8px;letter-spacing:1.5px;color:var(--muted);font-weight:500;margin-top:-5px}.top-tag{font-size:11px;color:var(--muted);background:#f5f7fa;border:1px solid var(--line);padding:7px 12px;border-radius:30px}.wrap{width:min(1040px,90%);margin:auto}.hero{padding:46px 0 26px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--blue);font-weight:600}.hero h1{font-size:clamp(32px,5vw,44px);line-height:1.25;letter-spacing:-.8px;margin:8px 0 10px;font-weight:600}.hero h1 span{color:var(--blue)}.hero p{font-size:13px;color:var(--muted);max-width:560px;margin:0}.layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);min-width:0}.section-title{display:flex;align-items:center;gap:12px;margin-bottom:23px}.number{width:34px;height:34px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);border-radius:10px;font-size:11px;font-weight:600;flex-shrink:0}.section-title h2{font-size:16px;margin:0;font-weight:600}.section-title p{font-size:11px;color:var(--muted);margin:2px 0 0}.form-card label{display:block;font-size:12px;font-weight:500;margin:18px 0 7px}.form-card label em{font-style:normal;color:var(--muted);font-size:11px;font-weight:300}.field{position:relative}.field input{width:100%;height:48px;border:1px solid #dfe6ee;border-radius:10px;background:#fbfcfe;padding:0 90px 0 13px;font:inherit;font-size:15px;color:var(--ink);outline:0;transition:.15s}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2864c51a}.field span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:10px;padding:4px 8px;border-radius:6px}.income-field span{color:var(--green);background:var(--green-soft)}.deduction-field span{color:var(--red);background:var(--red-soft)}.error{display:block;color:var(--red);font-size:10px;min-height:16px}.actions{display:flex;gap:9px;margin-top:16px}.btn{border:0;border-radius:9px;padding:12px 15px;font:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:background .15s}.primary{background:var(--blue);color:white;flex:1}.primary:hover{background:#1e53a8}.reset{background:#f0f3f7;color:#526176}.reset:hover{background:#e6ebf1}.btn:focus-visible{outline:3px solid #91b5ee;outline-offset:3px}.privacy-note{font-size:10px;color:var(--muted);margin-top:17px}.privacy-note span{color:var(--green);font-weight:700;margin-right:5px}.result-card{background:#fff;border-top:3px solid var(--blue);display:flex;flex-direction:column}.result-head{display:flex;justify-content:space-between;align-items:center}.result-kicker{font-size:9px;letter-spacing:1.3px;color:var(--blue);font-weight:600}.result-head h2{font-size:14px;margin:4px 0 0;font-weight:500}.coin{width:36px;height:36px;border-radius:11px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-weight:600}.tax-number{font-size:clamp(32px,4vw,43px);font-weight:600;letter-spacing:-1px;color:var(--blue);margin:20px 0 17px;line-height:1.3;overflow-wrap:anywhere}.tax-number small{font-size:11px;letter-spacing:0;font-weight:400;color:var(--muted)}.metrics{border-top:1px solid var(--line);padding-top:10px}.metric{display:flex;align-items:center;gap:10px;padding:8px 0}.metric .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}.metric div{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.metric small{font-size:11px;color:var(--muted)}.metric strong{font-size:12px;font-weight:600;text-align:right}.income-metric .dot{background:var(--green)}.income-metric strong{color:var(--green)}.deduction-metric .dot{background:var(--red)}.deduction-metric strong{color:var(--red)}.net-metric .dot{background:var(--blue)}.net-metric strong{color:var(--blue)}.result-foot{font-size:10px;color:var(--muted);margin:auto 0 0;padding-top:10px}.detail-card,.rate-card{margin-top:18px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:510px;font-size:11px}th{background:#f7f9fc;color:var(--muted);font-weight:500;text-align:left}th,td{padding:12px 11px;border-bottom:1px solid var(--line);white-space:nowrap}th:not(:first-child),td:not(:first-child){text-align:right}tbody tr:last-child td{border-bottom:0}.active-row{background:#f0f6ff}.active-row td:first-child{font-weight:500;color:var(--blue)}.total-line{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:5px;padding:17px 11px 0;font-size:13px}.total-line strong{font-size:18px;color:var(--blue)}.notice{font-size:10px;line-height:1.8;color:var(--muted);padding:18px 2px 30px}.notice strong{color:#53647a}footer{background:#fff;border-top:1px solid var(--line);padding:18px max(calc((100% - 1040px)/2),5%);display:flex;justify-content:space-between;color:var(--muted);font-size:10px}@media(max-width:700px){.topbar{height:62px;padding:0 5%}.top-tag{font-size:9px}.wrap{width:92%}.hero{padding:32px 0 22px}.layout{grid-template-columns:1fr;gap:13px}.card{padding:19px;border-radius:15px}.section-title{margin-bottom:18px}.result-card{min-height:265px}.detail-card,.rate-card{margin-top:13px}.hero p{font-size:12px}footer{gap:8px;font-size:9px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}\n</style>
+<script defer>\n"use strict";
+(() => {
+  const $ = id => document.getElementById(id);
+  const tiers = [
+    {min:0,max:150000,rate:0,label:"0 – 150,000"},
+    {min:150000,max:300000,rate:.05,label:"150,001 – 300,000"},
+    {min:300000,max:500000,rate:.10,label:"300,001 – 500,000"},
+    {min:500000,max:750000,rate:.15,label:"500,001 – 750,000"},
+    {min:750000,max:1000000,rate:.20,label:"750,001 – 1,000,000"},
+    {min:1000000,max:2000000,rate:.25,label:"1,000,001 – 2,000,000"},
+    {min:2000000,max:5000000,rate:.30,label:"2,000,001 – 5,000,000"},
+    {min:5000000,max:Infinity,rate:.35,label:"5,000,001 ขึ้นไป"}
+  ];
+  const money=n=>new Intl.NumberFormat("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+  const percent=n=>`${n*100}%`;
+  function renderRates(){
+    $("rate-body").innerHTML=tiers.map(t=>`<tr><td>${t.label} บาท</td><td>${t.rate===0?"ยกเว้น":percent(t.rate)}</td><td>${t.rate===0?"0.00":Number.isFinite(t.max)?money((t.max-t.min)*t.rate):"ไม่จำกัด"}</td></tr>`).join("");
+  }
+  function calculate(e){
+    if(e)e.preventDefault();
+    const rawIncome=$("monthly-income").value.trim(),rawDeduction=$("deductions").value.trim();
+    let valid=true;
+    [["income-error",rawIncome,"รายได้","monthly-income"],["deduction-error",rawDeduction,"ค่าลดหย่อน","deductions"]].forEach(([err,raw,label,inputId])=>{
+      const input=$(inputId),value=Number(raw);
+      if(raw===""||!Number.isFinite(value)||value<0){$(err).textContent=`กรุณากรอก${label}เป็นตัวเลขตั้งแต่ 0 ขึ้นไป`;input.setAttribute("aria-invalid","true");valid=false;}
+      else{ $(err).textContent="";input.removeAttribute("aria-invalid");}
+    });
+    if(!valid)return;
+    const annual=Number(rawIncome)*12,deduction=Number(rawDeduction),net=Math.max(0,annual-deduction);
+    let total=0;
+    $("breakdown-body").innerHTML=tiers.map(t=>{
+      const base=Math.max(0,Math.min(net,t.max)-t.min),tax=base*t.rate;total+=tax;
+      return `<tr class="${base>0?"active-row":""}"><td>${t.label}</td><td>${money(base)}</td><td>${percent(t.rate)}</td><td>${money(tax)}</td></tr>`;
+    }).join("");
+    $("annual-income").textContent=`${money(annual)} บาท`;
+    $("deduction-total").textContent=`${money(deduction)} บาท`;
+    $("net-income").textContent=`${money(net)} บาท`;
+    $("tax-total").innerHTML=`${money(total)} <small>บาท/ปี</small>`;
+    $("breakdown-total").textContent=`${money(total)} บาท`;
+  }
+  $("tax-form").addEventListener("submit",calculate);
+  $("reset-btn").addEventListener("click",()=>{setTimeout(()=>{ $("income-error").textContent="";$("deduction-error").textContent="";$("monthly-income").removeAttribute("aria-invalid");$("deductions").removeAttribute("aria-invalid");calculate();},0);});
+  // Update results as the user types, while retaining submit-time validation.
+  ["monthly-income","deductions"].forEach(id=>$(id).addEventListener("input",()=>{if($("monthly-income").value!==""&&$("deductions").value!=="")calculate();}));
+  renderRates();calculate();
+})();\n</script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./"><span class="brand-icon">฿</span><span>TaxFlow <small>THAILAND</small></span></a><span class="top-tag">เครื่องคำนวณภาษีส่วนบุคคล</span></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">PERSONAL INCOME TAX</div><h1>วางแผนภาษี<br><span>ให้เข้าใจง่ายขึ้น</span></h1><p>กรอกรายได้และค่าลดหย่อน เพื่อประมาณภาษีรายปี พร้อมดูวิธีคำนวณแยกทุกขั้นอย่างโปร่งใส</p></section>
+<section class="layout">
+<form id="tax-form" class="card form-card" novalidate>
+<div class="section-title"><span class="number">01</span><div><h2>ข้อมูลสำหรับคำนวณ</h2><p>ระบุยอดเงินต่อเดือนและค่าลดหย่อนต่อปี</p></div></div>
+<label for="monthly-income">รายได้หรือกำไรสุทธิต่อเดือน <em>บาท</em></label><div class="field income-field"><input id="monthly-income" type="number" min="0" step="0.01" inputmode="decimal" value="50000" placeholder="0" required><span>รายรับ</span></div><small id="income-error" class="error" aria-live="polite"></small>
+<label for="deductions">ค่าลดหย่อนรวมต่อปี <em>บาท</em></label><div class="field deduction-field"><input id="deductions" type="number" min="0" step="0.01" inputmode="decimal" value="100000" placeholder="0" required><span>ลดหย่อน</span></div><small id="deduction-error" class="error" aria-live="polite"></small>
+<div class="actions"><button class="btn primary" type="submit">คำนวณภาษี <span>→</span></button><button class="btn reset" type="reset" id="reset-btn">ล้างข้อมูล</button></div>
+<div class="privacy-note"><span>✓</span> ข้อมูลคำนวณภายในเบราว์เซอร์ ไม่ส่งไปเก็บบนเซิร์ฟเวอร์</div>
+</form>
+<section class="card result-card" aria-live="polite">
+<div class="result-head"><div><div class="result-kicker">ESTIMATED ANNUAL TAX</div><h2>ภาษีที่ต้องชำระโดยประมาณ</h2></div><span class="coin">฿</span></div>
+<div class="tax-number" id="tax-total">0.00 <small>บาท/ปี</small></div>
+<div class="metrics">
+<div class="metric income-metric"><span class="dot"></span><div><small>รายได้ต่อปี</small><strong id="annual-income">600,000.00 บาท</strong></div></div>
+<div class="metric deduction-metric"><span class="dot"></span><div><small>ค่าลดหย่อน</small><strong id="deduction-total">100,000.00 บาท</strong></div></div>
+<div class="metric net-metric"><span class="dot"></span><div><small>เงินได้สุทธิ</small><strong id="net-income">500,000.00 บาท</strong></div></div>
+</div><p class="result-foot">ยอดภาษีคำนวณแบบอัตราก้าวหน้า ไม่ใช่อัตราเดียวทั้งก้อน</p>
+</section>
+</section>
+<section class="card detail-card">
+<div class="section-title"><span class="number">02</span><div><h2>แจกแจงภาษีแต่ละขั้น</h2><p>ตรวจสอบฐานเงินได้ อัตราภาษี และภาษีที่เกิดขึ้นในแต่ละช่วง</p></div></div>
+<div class="table-scroll"><table><thead><tr><th>ช่วงเงินได้สุทธิ</th><th>เงินได้ในช่วง</th><th>อัตรา</th><th>ภาษี</th></tr></thead><tbody id="breakdown-body"></tbody></table></div>
+<div class="total-line"><span>ภาษีรวมทั้งปี</span><strong id="breakdown-total">0.00 บาท</strong></div>
+</section>
+<section class="card rate-card">
+<div class="section-title"><span class="number">03</span><div><h2>ตารางอัตราภาษี</h2><p>อัตราภาษีเงินได้สุทธิ 8 ขั้น</p></div></div>
+<div class="table-scroll"><table><thead><tr><th>เงินได้สุทธิต่อปี</th><th>อัตราภาษี</th><th>ภาษีสูงสุดในช่วง</th></tr></thead><tbody id="rate-body"></tbody></table></div>
+</section>
+<div class="notice"><strong>หมายเหตุ:</strong> เครื่องมือนี้คำนวณตามอัตราที่ระบุในโจทย์ และยังไม่รวมค่าใช้จ่ายตามประเภทเงินได้ สิทธิหักลดหย่อนเฉพาะ เครดิตภาษี หรือภาษีหัก ณ ที่จ่าย ผลลัพธ์เป็นเพียงประมาณการ ควรตรวจสอบหลักเกณฑ์กรมสรรพากรสำหรับปีภาษีที่ยื่นจริง</div>
+</main><footer><span>TaxFlow Thailand</span><span>คำนวณง่าย • เข้าใจทุกขั้นตอน</span></footer>
+</body></html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173f35">
+  <meta name="description" content="เครื่องคำนวณภาษีเงินได้บุคคลธรรมดาแบบขั้นบันได พร้อมแสดงรายละเอียดการคำนวณ">
+  <title>Thai Tax Calculator | เครื่องคำนวณภาษี</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/calculator.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Thai Tax Calculator หน้าหลัก"><span class="brand-mark">฿</span><span>Thai Tax<span class="brand-light"> Calculator</span></span></a>
+    <span class="year-pill">เครื่องคำนวณภาษี</span>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">PERSONAL INCOME TAX</p>
+      <h1>คำนวณภาษีเงินได้<br><span>ง่ายในไม่กี่ขั้นตอน</span></h1>
+      <p class="hero-copy">กรอกรายได้และค่าลดหย่อน เพื่อดูประมาณการภาษี พร้อมรายละเอียดการคำนวณในแต่ละขั้น</p>
+    </section>
+
+    <section class="calculator-grid" aria-label="เครื่องคำนวณภาษี">
+      <form id="tax-form" class="card input-card" novalidate>
+        <div class="section-heading"><span class="step">01</span><div><h2>ข้อมูลของคุณ</h2><p>ระบุข้อมูลรายได้และค่าลดหย่อนต่อปี</p></div></div>
+        <label for="monthly-income">รายได้หรือกำไรสุทธิต่อเดือน <span>(บาท)</span></label>
+        <div class="input-wrap"><input id="monthly-income" name="monthlyIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="เช่น 50000" value="50000" required><span>บาท/เดือน</span></div>
+        <small class="field-error" id="income-error" aria-live="polite"></small>
+
+        <label for="deductions">ค่าลดหย่อนรวมต่อปี <span>(บาท)</span></label>
+        <div class="input-wrap"><input id="deductions" name="deductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="เช่น 100000" value="100000" required><span>บาท/ปี</span></div>
+        <small class="field-error" id="deduction-error" aria-live="polite"></small>
+        <p class="hint">กรอกยอดค่าลดหย่อนรวมที่ต้องการนำมาหักจากรายได้ประจำปี</p>
+        <div class="form-actions"><button class="btn btn-primary" type="submit">คำนวณภาษี <span aria-hidden="true">→</span></button><button class="btn btn-secondary" id="reset-btn" type="reset">ล้างข้อมูล</button></div>
+      </form>
+
+      <section class="card summary-card" aria-live="polite">
+        <div class="summary-top"><span class="summary-label">ภาษีที่ต้องชำระโดยประมาณ / ปี</span><span class="summary-icon">฿</span></div>
+        <p class="tax-total" id="tax-total">0.00 <small>บาท</small></p>
+        <div class="summary-divider"></div>
+        <div class="metric"><span>รายได้ต่อปี</span><strong id="annual-income">600,000.00 บาท</strong></div>
+        <div class="metric"><span>ค่าลดหย่อน</span><strong id="deduction-total">100,000.00 บาท</strong></div>
+        <div class="net-box"><span>เงินได้สุทธิ</span><strong id="net-income">500,000.00 บาท</strong></div>
+        <p class="summary-note">คำนวณด้วยอัตราภาษีขั้นบันไดตามตารางด้านล่าง</p>
+      </section>
+    </section>
+
+    <section class="card detail-card">
+      <div class="section-heading"><span class="step">02</span><div><h2>รายละเอียดการคำนวณ</h2><p>ภาษีจะคิดเฉพาะเงินได้ที่อยู่ในแต่ละช่วง</p></div></div>
+      <div class="table-scroll"><table><thead><tr><th>ช่วงเงินได้สุทธิ</th><th>เงินได้ในช่วงนี้</th><th>อัตรา</th><th>ภาษี</th></tr></thead><tbody id="breakdown-body"></tbody></table></div>
+      <div class="total-row"><span>ภาษีรวมทั้งปี</span><strong id="breakdown-total">0.00 บาท</strong></div>
+    </section>
+
+    <section class="card rate-card">
+      <div class="section-heading"><span class="step">03</span><div><h2>ตารางอัตราภาษี</h2><p>อัตราภาษีเงินได้สุทธิ 8 ขั้นตามโจทย์</p></div></div>
+      <div class="table-scroll"><table><thead><tr><th>เงินได้สุทธิต่อปี</th><th>อัตราภาษี</th></tr></thead><tbody id="rate-body"></tbody></table></div>
+    </section>
+    <aside class="disclaimer"><strong>หมายเหตุ:</strong> เว็บไซต์นี้เป็นเครื่องมือประมาณการตามอัตราที่กำหนดในโจทย์ ยังไม่รวมการหักค่าใช้จ่ายตามประเภทเงินได้ เครดิตภาษี ภาษีหัก ณ ที่จ่าย และเงื่อนไขเฉพาะตามกฎหมายภาษี โปรดตรวจสอบหลักเกณฑ์ปีภาษีที่ต้องการยื่นกับกรมสรรพากรก่อนใช้งานจริง</aside>
+  </main>
+  <footer>Thai Tax Calculator <span>คำนวณง่าย เข้าใจทุกขั้นตอน</span></footer>
+</body>
+</html>

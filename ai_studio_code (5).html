@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบคำนวณและวางแผนลดหย่อนภาษีเงินได้บุคคลธรรมดา</title>
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Prompt', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">โปรแกรมคำนวณและวางแผนภาษีบุคคลธรรมดา</h1>
+          <p class="text-xs text-slate-500">อัตราภาษีแบบขั้นบันได และคู่มือลดหย่อนภาษี</p>
+        </div>
+      </div>
+      <a href="#deductionGuideSection" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-50 text-brand-700 border border-brand-200 hover:bg-brand-100 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        ดูวิธีลดหย่อนภาษี
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow w-full space-y-8">
+    
+    <!-- ฟอร์มและผลสรุปภาษี -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- ฟอร์มกรอกข้อมูล (ซ้าย) -->
+      <section class="lg:col-span-5 space-y-5">
+        <div class="bg-white rounded-2xl p-6 sm:p-7 shadow-xs border border-slate-200/80">
+          <h2 class="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+            คำนวณภาษี
+          </h2>
+          <p class="text-xs text-slate-500 mb-6">ระบุรายรับต่อเดือนและค่าลดหย่อนภาษีรวมตลอดทั้งปี</p>
+
+          <div class="space-y-4">
+            <!-- รายรับต่อเดือน -->
+            <div>
+              <label for="monthlyIncome" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                เงินเดือน / รายรับสุทธิต่อเดือน (บาท) <span class="text-rose-500">*</span>
+              </label>
+              <div class="relative rounded-xl">
+                <input 
+                  type="text" 
+                  inputmode="decimal"
+                  id="monthlyIncome" 
+                  placeholder="เช่น 50,000 หรือ 50000"
+                  onkeydown="if(event.key === 'Enter') calculateTax()"
+                  class="block w-full rounded-xl border border-slate-300 py-3 pl-4 pr-16 text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-base transition-colors"
+                />
+                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 text-sm font-medium">
+                  ฿/เดือน
+                </div>
+              </div>
+              <span id="monthlyIncomeError" class="text-xs text-rose-500 hidden mt-1">กรุณากรอกตัวเลขรายได้ที่ถูกต้อง</span>
+            </div>
+
+            <!-- ค่าลดหย่อนภาษี -->
+            <div>
+              <div class="flex justify-between items-center mb-1.5">
+                <label for="deductions" class="block text-sm font-semibold text-slate-700">
+                  ค่าลดหย่อนภาษีรวมต่อปี (บาท)
+                </label>
+                <span class="text-[11px] text-slate-400">เริ่มต้น: ลดหย่อนส่วนตัว 60,000</span>
+              </div>
+              <div class="relative rounded-xl">
+                <input 
+                  type="text" 
+                  inputmode="decimal"
+                  id="deductions" 
+                  value="60,000"
+                  placeholder="เช่น 60,000"
+                  onkeydown="if(event.key === 'Enter') calculateTax()"
+                  class="block w-full rounded-xl border border-slate-300 py-3 pl-4 pr-14 text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-base transition-colors"
+                />
+                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 text-sm font-medium">
+                  ฿/ปี
+                </div>
+              </div>
+              <span id="deductionsError" class="text-xs text-rose-500 hidden mt-1">กรุณากรอกตัวเลขค่าลดหย่อนที่ถูกต้อง</span>
+            </div>
+
+            <!-- ข้อความแจ้งเตือนเมื่อเกิดข้อผิดพลาด -->
+            <div id="alertMessage" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+              <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+              <span>ข้อมูลไม่ถูกต้อง กรุณากรอกตัวเลขรายได้</span>
+            </div>
+
+            <!-- ปุ่มคำนวณและล้างข้อมูล -->
+            <div class="pt-2 flex flex-col sm:flex-row gap-2.5">
+              <button 
+                type="button" 
+                onclick="calculateTax()"
+                class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-brand-600/20 transition duration-150 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                คำนวณภาษี
+              </button>
+              <button 
+                type="button" 
+                onclick="resetForm()"
+                class="sm:w-28 bg-white hover:bg-slate-100 text-slate-700 font-medium py-3 px-4 rounded-xl border border-slate-300 transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer">
+                ล้างข้อมูล
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- คำแนะนำการประหยัดภาษีแบบ Real-time -->
+        <div id="savingHintCard" class="hidden bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent rounded-2xl p-4 border border-amber-200/80 text-amber-900 text-xs space-y-1">
+          <p class="font-bold flex items-center gap-1.5 text-amber-950">
+            <svg class="w-4 h-4 text-amber-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.001z"></path></svg>
+            เคล็ดลับประหยัดภาษีสำหรับคุณ:
+          </p>
+          <p id="savingHintText" class="leading-relaxed text-amber-800">
+            ฐานภาษีสูงสุดของคุณอยู่ที่ <strong>0%</strong>
+          </p>
+        </div>
+      </section>
+
+      <!-- สรุปผลลัพธ์ (ขวา) -->
+      <section class="lg:col-span-7 space-y-5">
+        
+        <!-- แดชบอร์ดสรุป 4 การ์ด -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+            <p class="text-xs font-medium text-slate-500 mb-1">รายได้ต่อปี (Income/Year)</p>
+            <p id="resAnnualIncome" class="text-base sm:text-xl font-bold text-slate-800">0.00 ฿</p>
+          </div>
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+            <p class="text-xs font-medium text-slate-500 mb-1">ค่าลดหย่อนรวม (Deductions)</p>
+            <p id="resDeductions" class="text-base sm:text-xl font-bold text-slate-800">0.00 ฿</p>
+          </div>
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+            <p class="text-xs font-medium text-slate-500 mb-1">เงินได้สุทธิ (Taxable Income)</p>
+            <p id="resTaxableIncome" class="text-base sm:text-xl font-bold text-brand-600">0.00 ฿</p>
+          </div>
+          <div class="bg-gradient-to-br from-brand-600 to-indigo-700 text-white p-4 sm:p-5 rounded-2xl shadow-md shadow-brand-500/20">
+            <p class="text-xs font-medium text-indigo-100 mb-1">ภาษีที่ต้องชำระ (Total Tax)</p>
+            <p id="resTotalTax" class="text-lg sm:text-2xl font-black text-white">0.00 ฿</p>
+            <p id="resEffectiveRate" class="text-[11px] text-indigo-200 mt-0.5">อัตราเฉลี่ย: 0.00%</p>
+          </div>
+        </div>
+
+        <!-- ตารางขั้นบันได 8 ขั้น -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-1">ตารางคำนวณภาษีอัตราขั้นบันได (Progressive Tax)</h3>
+          <p class="text-xs text-slate-500 mb-4">แสดงเงินได้และภาษีที่ต้องจ่ายในแต่ละช่วงอย่างละเอียด</p>
+
+          <div class="overflow-x-auto -mx-5 sm:mx-0">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead>
+                <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50/75">
+                  <th class="py-2.5 px-3 rounded-l-lg">ช่วงเงินได้สุทธิ (บาท)</th>
+                  <th class="py-2.5 px-2 text-center">อัตราภาษี</th>
+                  <th class="py-2.5 px-3 text-right">เงินได้ในขั้นนี้ (บาท)</th>
+                  <th class="py-2.5 px-3 text-right rounded-r-lg">ภาษีในขั้นนี้ (บาท)</th>
+                </tr>
+              </thead>
+              <tbody id="taxBreakdownBody" class="divide-y divide-slate-100 font-medium">
+                <!-- เรนเดอร์ด้วย Javascript -->
+              </tbody>
+              <tfoot class="border-t-2 border-slate-200 font-bold bg-slate-50/60">
+                <tr>
+                  <td colspan="2" class="py-3 px-3 text-slate-800">รวมทั้งหมด</td>
+                  <td id="tableSumTaxable" class="py-3 px-3 text-right text-slate-800">0.00</td>
+                  <td id="tableSumTax" class="py-3 px-3 text-right text-brand-600 font-extrabold text-base">0.00 ฿</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- ตารางแนะนำสิทธิลดหย่อนภาษี -->
+    <section id="deductionGuideSection" class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            คู่มือและวิธีลดหย่อนภาษีที่แนะนำ (Tax Deduction Guide)
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">คลิกปุ่มสีเขียว เพื่อบวกเพิ่มสิทธิลดหย่อนเข้าในฟอร์มคำนวณภาษีได้ทันที</p>
+        </div>
+
+        <!-- Filter หมวดหมู่ -->
+        <div class="flex flex-wrap gap-1.5" id="categoryFilters">
+          <button type="button" onclick="filterDeductions('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-white transition-colors cursor-pointer" data-category="all">ทั้งหมด</button>
+          <button type="button" onclick="filterDeductions('donation')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" data-category="donation">บริจาค (ได้ 2 เท่า)</button>
+          <button type="button" onclick="filterDeductions('fund')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" data-category="fund">กองทุนและการลงทุน</button>
+          <button type="button" onclick="filterDeductions('insurance')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" data-category="insurance">ประกันชีวิตและสุขภาพ</button>
+          <button type="button" onclick="filterDeductions('general')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" data-category="general">ทั่วไป/ครอบครัว</button>
+        </div>
+      </div>
+
+      <!-- ตารางแสดงรายการสิทธิลดหย่อน -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50/75">
+              <th class="py-3 px-3.5 rounded-l-lg">รายการลดหย่อน</th>
+              <th class="py-3 px-3.5">หมวดหมู่</th>
+              <th class="py-3 px-3.5">สิทธิลดหย่อนสูงสุด</th>
+              <th class="py-3 px-3.5">เงื่อนไขสำคัญ / คำแนะนำ</th>
+              <th class="py-3 px-3.5 text-center rounded-r-lg">เพิ่มลงในฟอร์ม</th>
+            </tr>
+          </thead>
+          <tbody id="deductionTableBody" class="divide-y divide-slate-100 font-medium">
+            <!-- เรนเดอร์ด้วย Javascript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- หมายเหตุเพิ่มเติม -->
+      <div class="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 space-y-1">
+        <p class="font-semibold text-slate-700">📌 หมายเหตุสำคัญ:</p>
+        <p>• เงินบริจาคเพื่อการศึกษา กีฬา และโรงพยาบาลรัฐ ผ่านระบบ e-Donation สามารถนำมาหักลดหย่อนได้ <strong>2 เท่าของยอดจ่ายจริง</strong> แต่เมื่อรวมแล้วต้องไม่เกิน 10% ของเงินได้หลังหักค่าใช้จ่ายและค่าลดหย่อนอื่น</p>
+        <p>• กลุ่มกองทุนรวมเพื่อการเกษียณ (RMF, SSF, PVD, กบข., กอช., ประกันบำนาญ) เมื่อนับรวมกันทั้งหมดแล้วต้องไม่เกิน 500,000 บาท</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto px-4">
+      ข้อมูลอ้างอิงตามประมวลรัษฎากร กรมสรรพากร ประเทศไทย | โปรแกรมช่วยคำนวณและจำลองการวางแผนภาษีเบื้องต้น
+    </div>
+  </footer>
+
+  <!-- JavaScript Code ที่ทำงาน 100% -->
+  <script>
+    // อัตราภาษีขั้นบันได 8 ขั้น
+    const TAX_BRACKETS = [
+      { min: 0, max: 150000, rate: 0.00, label: "0 – 150,000" },
+      { min: 150000, max: 300000, rate: 0.05, label: "150,001 – 300,000" },
+      { min: 300000, max: 500000, rate: 0.10, label: "300,001 – 500,000" },
+      { min: 500000, max: 750000, rate: 0.15, label: "500,001 – 750,000" },
+      { min: 750000, max: 1000000, rate: 0.20, label: "750,001 – 1,000,000" },
+      { min: 1000000, max: 2000000, rate: 0.25, label: "1,000,001 – 2,000,000" },
+      { min: 2000000, max: 5000000, rate: 0.30, label: "2,000,001 – 5,000,000" },
+      { min: 5000000, max: Infinity, rate: 0.35, label: "5,000,001 ขึ้นไป" }
+    ];
+
+    // ข้อมูลสิทธิลดหย่อนภาษี
+    const DEDUCTION_ITEMS = [
+      {
+        id: 'don_hosp',
+        name: 'บริจาคโรงพยาบาลรัฐ / สถานพยาบาลรัฐ',
+        category: 'donation',
+        categoryName: 'บริจาค',
+        maxLimit: 'ลดหย่อนได้ 2 เท่า (ไม่เกิน 10% ของเงินได้สุทธิ)',
+        defaultAddValue: 10000,
+        tip: 'บริจาคผ่าน e-Donation เช่น บริจาค 5,000 บาท ได้สิทธิลดหย่อน 10,000 บาททันที คุ้มค่าที่สุด'
+      },
+      {
+        id: 'don_edu',
+        name: 'บริจาคเพื่อการศึกษา / กีฬา / สถานพัฒนาเด็ก',
+        category: 'donation',
+        categoryName: 'บริจาค',
+        maxLimit: 'ลดหย่อนได้ 2 เท่า (ไม่เกิน 10% ของเงินได้สุทธิ)',
+        defaultAddValue: 10000,
+        tip: 'ต้องบริจาคผ่านระบบ e-Donation ลดหย่อนได้ 2 เท่าของเงินที่จ่ายจริง'
+      },
+      {
+        id: 'don_general',
+        name: 'บริจาคทั่วไป / วัด / มูลนิธิ / องค์กรการกุศล',
+        category: 'donation',
+        categoryName: 'บริจาค',
+        maxLimit: 'ตามจริง ไม่เกิน 10% ของเงินได้สุทธิ',
+        defaultAddValue: 5000,
+        tip: 'ต้องเป็นวัดหรือมูลนิธิตามที่กระทรวงการคลังประกาศกำหนด'
+      },
+      {
+        id: 'fund_thaiesg',
+        name: 'กองทุน Thai ESG (เพื่อความยั่งยืน)',
+        category: 'fund',
+        categoryName: 'กองทุนและการลงทุน',
+        maxLimit: 'สูงสุด 30% ของเงินได้ (ไม่เกิน 300,000 บาท)',
+        defaultAddValue: 50000,
+        tip: 'เกณฑ์ใหม่ถือครองเพียง 5 ปี ไม่รวมกับเพดาน 500,000 บาทของกลุ่มเกษียณ'
+      },
+      {
+        id: 'fund_rmf',
+        name: 'กองทุน RMF (เพื่อการเลี้ยงชีพ)',
+        category: 'fund',
+        categoryName: 'กองทุนและการลงทุน',
+        maxLimit: 'สูงสุด 30% ของเงินได้ (ไม่เกิน 500,000 บาท)',
+        defaultAddValue: 50000,
+        tip: 'ต้องลงทุนต่อเนื่องถึงอายุ 55 ปีบริบูรณ์ และถือครองไม่ต่ำกว่า 5 ปี'
+      },
+      {
+        id: 'fund_ssf',
+        name: 'กองทุน SSF (เพื่อการออม)',
+        category: 'fund',
+        categoryName: 'กองทุนและการลงทุน',
+        maxLimit: 'สูงสุด 30% ของเงินได้ (ไม่เกิน 200,000 บาท)',
+        defaultAddValue: 50000,
+        tip: 'ต้องถือครองหน่วยลงทุนไม่น้อยกว่า 10 ปี นับจากวันที่ซื้อ'
+      },
+      {
+        id: 'fund_pvd',
+        name: 'กองทุนสำรองเลี้ยงชีพ (PVD) / กบข. / กอช.',
+        category: 'fund',
+        categoryName: 'กองทุนและการลงทุน',
+        maxLimit: 'สูงสุด 15% ของค่าจ้าง (ไม่เกิน 500,000 บาท)',
+        defaultAddValue: 10000,
+        tip: 'เงินสะสมที่ถูกหักจากเงินเดือนเข้ากองทุนของหน่วยงาน'
+      },
+      {
+        id: 'ins_life',
+        name: 'เบี้ยประกันชีวิตทั่วไป / ประกันสะสมทรัพย์',
+        category: 'insurance',
+        categoryName: 'ประกัน',
+        maxLimit: 'ตามที่จ่ายจริง สูงสุด 100,000 บาท',
+        defaultAddValue: 20000,
+        tip: 'กรมธรรม์ต้องมีระยะเวลาคุ้มครองตั้งแต่ 10 ปีขึ้นไป'
+      },
+      {
+        id: 'ins_health',
+        name: 'เบี้ยประกันสุขภาพตนเอง',
+        category: 'insurance',
+        categoryName: 'ประกัน',
+        maxLimit: 'ตามจริง สูงสุด 25,000 บาท (รวมประกันชีวิตไม่เกิน 100,000)',
+        defaultAddValue: 15000,
+        tip: 'ช่วยคุ้มครองค่ารักษาพยาบาลและลดหย่อนภาษีได้พร้อมกัน'
+      },
+      {
+        id: 'ins_parents',
+        name: 'เบี้ยประกันสุขภาพบิดามารดา',
+        category: 'insurance',
+        categoryName: 'ประกัน',
+        maxLimit: 'สูงสุด 15,000 บาท',
+        defaultAddValue: 10000,
+        tip: 'บิดามารดาต้องมีรายได้ไม่เกิน 30,000 บาทต่อปี'
+      },
+      {
+        id: 'gen_home_interest',
+        name: 'ดอกเบี้ยเงินกู้ยืมเพื่อซื้อที่อยู่อาศัย',
+        category: 'general',
+        categoryName: 'ทั่วไป/ครอบครัว',
+        maxLimit: 'ตามที่จ่ายจริง สูงสุด 100,000 บาท',
+        defaultAddValue: 30000,
+        tip: 'ดอกเบี้ยเงินกู้ซื้อบ้าน คอนโดมิเนียม จากสถาบันการเงินในประเทศ'
+      },
+      {
+        id: 'gen_social_security',
+        name: 'เงินสมทบกองทุนประกันสังคม',
+        category: 'general',
+        categoryName: 'ทั่วไป/ครอบครัว',
+        maxLimit: 'ตามที่จ่ายจริง สูงสุด 9,000 บาท/ปี',
+        defaultAddValue: 9000,
+        tip: 'หักจากเงินเดือน 5% สูงสุดเดือนละ 750 บาท (รวมปีละ 9,000 บาท)'
+      }
+    ];
+
+    // ฟังก์ชันแปลงข้อความเป็นตัวเลข (รองรับทั้งที่มีหรือไม่มีคอมม่า)
+    function cleanAndParseNumber(value) {
+      if (typeof value === 'number') return isNaN(value) ? 0 : value;
+      if (!value) return 0;
+      var cleaned = value.toString().replace(/,/g, '').trim();
+      var num = parseFloat(cleaned);
+      return isNaN(num) ? NaN : num;
+    }
+
+    // ฟังก์ชันฟอร์แมตตัวเลขเงิน
+    function formatCurrency(num) {
+      if (isNaN(num)) return '0.00';
+      return new Intl.NumberFormat('th-TH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(num);
+    }
+
+    // ฟังก์ชันคำนวณภาษี (ผูกเข้ากับ window โดยตรง)
+    window.calculateTax = function() {
+      var monthlyInput = document.getElementById('monthlyIncome');
+      var deductionsInput = document.getElementById('deductions');
+      var monthlyIncomeError = document.getElementById('monthlyIncomeError');
+      var deductionsError = document.getElementById('deductionsError');
+      var alertMessage = document.getElementById('alertMessage');
+
+      var rawMonthly = monthlyInput.value ? monthlyInput.value.trim() : '';
+      var rawDeductions = deductionsInput.value ? deductionsInput.value.trim() : '0';
+
+      var monthlyIncome = cleanAndParseNumber(rawMonthly);
+      var deductions = cleanAndParseNumber(rawDeductions);
+
+      // ซ่อน Error ก่อนคำนวณ
+      monthlyIncomeError.classList.add('hidden');
+      deductionsError.classList.add('hidden');
+      alertMessage.classList.add('hidden');
+
+      var hasError = false;
+      if (rawMonthly === '' || isNaN(monthlyIncome) || monthlyIncome < 0) {
+        monthlyIncomeError.classList.remove('hidden');
+        hasError = true;
+      }
+      if (isNaN(deductions) || deductions < 0) {
+        deductionsError.classList.remove('hidden');
+        hasError = true;
+      }
+
+      if (hasError) {
+        alertMessage.classList.remove('hidden');
+        return;
+      }
+
+      // จัดฟอร์แมตตัวเลขในช่องกรอกให้มีคอมม่า
+      monthlyInput.value = Number(monthlyIncome).toLocaleString('th-TH');
+      deductionsInput.value = Number(deductions).toLocaleString('th-TH');
+
+      var annualIncome = monthlyIncome * 12;
+      var taxableIncome = Math.max(0, annualIncome - deductions);
+
+      var totalTax = 0;
+      var currentMarginalTaxRate = 0;
+      var breakdownDetails = [];
+
+      for (var i = 0; i < TAX_BRACKETS.length; i++) {
+        var bracket = TAX_BRACKETS[i];
+        var taxableInBracket = 0;
+        var taxInBracket = 0;
+
+        if (taxableIncome > bracket.min) {
+          if (bracket.max === Infinity) {
+            taxableInBracket = taxableIncome - bracket.min;
+          } else {
+            taxableInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
+          }
+          taxInBracket = taxableInBracket * bracket.rate;
+          currentMarginalTaxRate = bracket.rate;
+        }
+
+        totalTax += taxInBracket;
+
+        breakdownDetails.push({
+          label: bracket.label,
+          rate: (bracket.rate * 100) + '%',
+          rateValue: bracket.rate,
+          taxableInBracket: taxableInBracket,
+          taxInBracket: taxInBracket,
+          isActive: taxableInBracket > 0
+        });
+      }
+
+      // อัปเดตข้อความบนหน้าจอ
+      document.getElementById('resAnnualIncome').textContent = formatCurrency(annualIncome) + ' ฿';
+      document.getElementById('resDeductions').textContent = formatCurrency(deductions) + ' ฿';
+      document.getElementById('resTaxableIncome').textContent = formatCurrency(taxableIncome) + ' ฿';
+      document.getElementById('resTotalTax').textContent = formatCurrency(totalTax) + ' ฿';
+      
+      var effectiveRate = annualIncome > 0 ? ((totalTax / annualIncome) * 100).toFixed(2) : '0.00';
+      document.getElementById('resEffectiveRate').textContent = 'อัตราเฉลี่ย: ' + effectiveRate + '%';
+
+      renderBreakdownTable(breakdownDetails, taxableIncome, totalTax);
+      updateSavingInsightCard(currentMarginalTaxRate);
+    };
+
+    // ฟังก์ชันล้างข้อมูล (ผูกเข้ากับ window โดยตรง)
+    window.resetForm = function() {
+      document.getElementById('monthlyIncome').value = '';
+      document.getElementById('deductions').value = '60,000';
+      
+      document.getElementById('monthlyIncomeError').classList.add('hidden');
+      document.getElementById('deductionsError').classList.add('hidden');
+      document.getElementById('alertMessage').classList.add('hidden');
+      document.getElementById('savingHintCard').classList.add('hidden');
+
+      document.getElementById('resAnnualIncome').textContent = '0.00 ฿';
+      document.getElementById('resDeductions').textContent = '0.00 ฿';
+      document.getElementById('resTaxableIncome').textContent = '0.00 ฿';
+      document.getElementById('resTotalTax').textContent = '0.00 ฿';
+      document.getElementById('resEffectiveRate').textContent = 'อัตราเฉลี่ย: 0.00%';
+
+      initDefaultTable();
+    };
+
+    // อัปเดตการ์ดคำแนะนำภาษี
+    function updateSavingInsightCard(rate) {
+      var card = document.getElementById('savingHintCard');
+      var text = document.getElementById('savingHintText');
+      card.classList.remove('hidden');
+
+      if (rate === 0) {
+        text.innerHTML = 'ปัจจุบันคุณ<strong>ยังไม่ต้องเสียภาษี</strong> (เงินได้สุทธิไม่เกินเกณฑ์ยกเว้น) จึงยังไม่มีความจำเป็นเร่งด่วนในการเพิ่มค่าลดหย่อน';
+      } else {
+        var ratePercent = (rate * 100).toFixed(0);
+        var savedAmountPer10k = 10000 * rate;
+        text.innerHTML = 'ปัจจุบันฐานภาษีสูงสุดของคุณอยู่ที่ <strong>' + ratePercent + '%</strong> หมายความว่าหากลดหย่อนเพิ่มทุกๆ 10,000 บาท จะประหยัดภาษีได้จริง <strong>' + formatCurrency(savedAmountPer10k) + ' บาท</strong> (หรือหากบริจาค รพ.รัฐ 5,000 บาท ได้สิทธิลดหย่อน 10,000 บาท ก็ช่วยประหยัดได้เท่านี้เช่นกัน)';
+      }
+    }
+
+    // เรนเดอร์ตารางขั้นบันได
+    function renderBreakdownTable(breakdownDetails, totalTaxable, totalTax) {
+      var tbody = document.getElementById('taxBreakdownBody');
+      tbody.innerHTML = '';
+
+      for (var i = 0; i < breakdownDetails.length; i++) {
+        var item = breakdownDetails[i];
+        var tr = document.createElement('tr');
+        if (item.isActive) {
+          tr.className = "bg-indigo-50/70 font-semibold text-slate-900 transition-colors";
+        } else {
+          tr.className = "text-slate-500 hover:bg-slate-50 transition-colors";
+        }
+
+        tr.innerHTML = 
+          '<td class="py-2.5 px-3 flex items-center gap-2">' +
+            (item.isActive ? '<span class="w-1.5 h-1.5 rounded-full bg-brand-600 inline-block"></span>' : '<span class="w-1.5 h-1.5 inline-block"></span>') +
+            '<span>' + item.label + '</span>' +
+          '</td>' +
+          '<td class="py-2.5 px-2 text-center">' +
+            '<span class="inline-block px-2 py-0.5 rounded text-xs ' + (item.rateValue === 0 ? 'bg-slate-100 text-slate-600' : 'bg-brand-50 text-brand-700 font-bold') + '">' +
+              (item.rateValue === 0 ? 'ยกเว้น' : item.rate) +
+            '</span>' +
+          '</td>' +
+          '<td class="py-2.5 px-3 text-right font-mono">' + formatCurrency(item.taxableInBracket) + '</td>' +
+          '<td class="py-2.5 px-3 text-right font-mono ' + (item.taxInBracket > 0 ? 'text-brand-600 font-bold' : 'text-slate-400') + '">' +
+            formatCurrency(item.taxInBracket) +
+          '</td>';
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('tableSumTaxable').textContent = formatCurrency(totalTaxable);
+      document.getElementById('tableSumTax').textContent = formatCurrency(totalTax) + ' ฿';
+    }
+
+    // เรนเดอร์ตารางแนะนำลดหย่อน
+    window.renderDeductionGuide = function(filterCategory) {
+      filterCategory = filterCategory || 'all';
+      var tbody = document.getElementById('deductionTableBody');
+      tbody.innerHTML = '';
+
+      var items = filterCategory === 'all' 
+        ? DEDUCTION_ITEMS 
+        : DEDUCTION_ITEMS.filter(function(item) { return item.category === filterCategory; });
+
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition-colors";
+
+        var badgeColor = "bg-slate-100 text-slate-700";
+        if (item.category === 'donation') badgeColor = "bg-rose-50 text-rose-700 border border-rose-200/60";
+        if (item.category === 'fund') badgeColor = "bg-emerald-50 text-emerald-700 border border-emerald-200/60";
+        if (item.category === 'insurance') badgeColor = "bg-sky-50 text-sky-700 border border-sky-200/60";
+
+        tr.innerHTML = 
+          '<td class="py-3 px-3.5"><div class="font-bold text-slate-900">' + item.name + '</div></td>' +
+          '<td class="py-3 px-3.5"><span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ' + badgeColor + '">' + item.categoryName + '</span></td>' +
+          '<td class="py-3 px-3.5 font-semibold text-slate-800">' + item.maxLimit + '</td>' +
+          '<td class="py-3 px-3.5 text-xs text-slate-500 max-w-xs leading-relaxed">' + item.tip + '</td>' +
+          '<td class="py-3 px-3.5 text-center">' +
+            '<button type="button" onclick="addDeductionAmount(' + item.defaultAddValue + ')" class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition-colors cursor-pointer shadow-xs">' +
+              '+' + item.defaultAddValue.toLocaleString() +
+            '</button>' +
+          '</td>';
+        tbody.appendChild(tr);
+      }
+    };
+
+    // ตัวกรองหมวดหมู่
+    window.filterDeductions = function(category) {
+      var buttons = document.querySelectorAll('#categoryFilters .filter-btn');
+      buttons.forEach(function(btn) {
+        if (btn.getAttribute('data-category') === category) {
+          btn.className = "filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-white transition-colors cursor-pointer";
+        } else {
+          btn.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer";
+        }
+      });
+      window.renderDeductionGuide(category);
+    };
+
+    // ฟังก์ชันเพิ่มค่าลดหย่อนลงฟอร์ม
+    window.addDeductionAmount = function(amount) {
+      var deductionsInput = document.getElementById('deductions');
+      var currentVal = cleanAndParseNumber(deductionsInput.value) || 0;
+      var newVal = currentVal + amount;
+      deductionsInput.value = newVal.toLocaleString('th-TH');
+      
+      var monthlyIncome = cleanAndParseNumber(document.getElementById('monthlyIncome').value);
+      if (!isNaN(monthlyIncome) && monthlyIncome > 0) {
+        window.calculateTax();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    function initDefaultTable() {
+      var defaultBreakdown = TAX_BRACKETS.map(function(b) {
+        return {
+          label: b.label,
+          rate: (b.rate * 100) + '%',
+          rateValue: b.rate,
+          taxableInBracket: 0,
+          taxInBracket: 0,
+          isActive: false
+        };
+      });
+      renderBreakdownTable(defaultBreakdown, 0, 0);
+    }
+
+    // ทำงานทันทีโดยไม่ต้องรอ Event listener ค้าง
+    initDefaultTable();
+    window.renderDeductionGuide('all');
+  </script>
+</body>
+</html>
